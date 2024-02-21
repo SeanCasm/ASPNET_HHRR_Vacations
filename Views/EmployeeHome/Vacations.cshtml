@@ -1,0 +1,68 @@
+﻿@using ASPNET_HHRR_Vacations.Helpers
+@model IEnumerable<ASPNET_HHRR_Vacations.Models.VacationTicket>
+
+@{
+    int counter = 0;
+    ViewData["Title"] = "Vacations tickets requested";
+}
+<section>
+    <h3>@ViewData["Title"]</h3>
+    <hr />
+    <p>
+        This portal is to <strong class="text-success">request a new vacations ticket</strong>.
+    </p>
+</section>
+<p>
+    You have @Model.Count() requests for vacations.
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                #
+            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Issued)
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vacation.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vacation.EndDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(++counter)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Issued)
+                </td>
+                <td>
+                    @{
+                        string styleClass = TicketRequestStatus.GetTicketStatusStyle(item.RequestId);
+                        <span class="@($"text-{styleClass}")">@item.Request.RequestType</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vacation.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vacation.EndDate)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="mt-5">
+    <a asp-action="Index" asp-controller="EmployeeHome">Back</a>
+</div>

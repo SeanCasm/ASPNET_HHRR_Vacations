@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Enterprise Portal";
+}
+
+<div class="text-center">
+    <h1>@ViewData["Title"]</h1>
+    <div class="mt-5">
+        <p>Welcome to EnterprisePortal for our Enterprise employees :D</p>
+    </div>
+    <br />
+    <p>
+        Use your Enterprise credentials to
+        @Html.ActionLink("Login", "Index","Login")
+        into the platform.
+    </p>
+</div>
+

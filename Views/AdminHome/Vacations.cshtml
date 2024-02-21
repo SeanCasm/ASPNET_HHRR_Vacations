@@ -1,0 +1,105 @@
+﻿@using ASPNET_HHRR_Vacations.Helpers
+@model IEnumerable<ASPNET_HHRR_Vacations.Models.VacationTicket>
+@{
+    int counter = 0;
+}
+<section>
+    <h3>Vacations</h3>
+    <p>
+        This portal handles the employees vacations requests generated in the enterprise portal.
+        You can <strong class="text-success">Approve </strong>or  <strong class="text-danger">Decline </strong> a request issued by an employee registered.
+        <br /><br />
+        <strong>Employee: @TempData["EmployeeName"]</strong>
+    </p>
+
+</section>
+<section>
+    <p class="text-success">@TempData["Success"]</p>
+</section>
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                #
+            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Issued)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vacation.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vacation.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request.RequestType)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(++counter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Issued)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vacation.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vacation.EndDate)
+                </td>
+                <td>
+                    @{
+                        string styleClass = TicketRequestStatus.GetTicketStatusStyle(item.RequestId);
+                        <span class="@($"text-{styleClass}")">@item.Request.RequestType</span>
+                    }
+                </td>
+                <td>
+                    @{
+                        if (item.RequestId == TicketRequestStatus.sent)
+                        {
+                            <div class="d-flex gap-2">
+                                @using (Html.BeginForm("Approve", "AdminHome", new { id = item.TicketId }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-success">Approve</button>
+                                }
+
+                                @using (Html.BeginForm("Decline", "AdminHome", new { id = item.TicketId }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-danger">Decline</button>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <span class="text-warning">Update not available.</span>
+                            </div>
+                        }
+
+                    }
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+@if (Model.Count() == 0)
+{
+    <p class="text-warning text-center">
+        No requests are found for this employee.
+    </p>
+}
+
+<div class="mt-5">
+    <a asp-action="Employees" asp-controller="AdminHome" class="btn btn-secondary">Back</a>
+</div>

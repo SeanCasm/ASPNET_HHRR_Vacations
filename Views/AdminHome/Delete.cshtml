@@ -1,0 +1,53 @@
+﻿@model ASPNET_HHRR_Vacations.Models.UserCredential
+@{
+}
+<section>
+    <h3>Employee management</h3>
+    <hr />
+    <p>
+        This portal is to <strong class="text-danger">DELETE an employee</strong> from the database.
+        The employee information will be completly eliminated (user credentials and vacations requests) and <strong class="text-danger">NO ACTIONS TO REVERT</strong>
+        this changes are available.
+    </p>
+</section>
+<hr />
+<main>
+    <p>You want to delete the selected Employee from the database?</p>
+    <h2> @Model?.Employee?.CompleteName</h2>
+    <p>Creation date: @Model?.CreationDate</p>
+    <p>Email: @Model?.Email</p>
+    <p>Insert your password below to confirm delete action.</p>
+    <div class="row">
+        <div class="col-md-4">
+            @using (Html.BeginForm("Delete", "AdminHome", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.EmployeeId)
+                @Html.HiddenFor(model => model.Employee.FirstName)
+                @Html.HiddenFor(model => model.Employee.LastName)
+                @Html.HiddenFor(model => model.CreationDate)
+                @Html.HiddenFor(model => model.Email)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PasswordHash, new { @class = "control-label" })
+                    @Html.PasswordFor(model => model.PasswordHash, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PasswordHash, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="submit" value="Confirm" class="btn btn-danger" />
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            }
+
+        </div>
+    </div>
+
+</main>
+<div class="mt-5">
+    <a asp-action="Employees" asp-controller="AdminHome" class="btn btn-secondary">Back</a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

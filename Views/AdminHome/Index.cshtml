@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+
+}
+<header class="text-center">
+    <h1>@ViewData["Title"] @ViewBag.Name</h1>
+</header>
+<hr />
+<p>
+    Administration web portal, specially designed for simple employee vacations tickets management.
+    Any problem or recommendation, contact with our enterprise administrators.
+</p>
+<section class="d-flex flex-column text-center">
+    <div class="mt-5">
+        <a asp-action="Employees" asp-controller="AdminHome" class="btn btn-primary">Employees management</a>
+    </div>
+</section>

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<ASPNET_HHRR_Vacations.Models.Employee>
+
+@{
+    ViewData["Title"] = "Welcome";
+    int counter = 0;
+}
+<section>
+    <h3>Employee management</h3>
+    <hr />
+    <p>
+        This portal allows you to <strong class="text-success">Edit, see Details and Delete</strong> employees from the database.
+        <br/>
+        You can <strong class="text-success">Add</strong> a new employee to the database pressing the button below.
+    </p>
+</section>
+<a asp-action="Create" class="btn btn-success">
+    <strong>Add</strong>
+</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                #
+            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                Requests
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(++counter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @item.VacationTickets.Count()
+                </td>
+                <td>
+                    @{
+                        if (!item.UserCredential.IsAdmin)
+                        {
+                            var parms = new Dictionary<string, string>
+                            {
+                                { "completeName", item.CompleteName },
+                            };
+                            <div>
+                                <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a>
+                                |
+                                <a asp-action="Vacations" asp-all-route-data="parms" asp-route-id="@item.EmployeeId">Requests</a>
+                                |
+                                <a asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-warning"><strong>No actions available.</strong></div>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="mt-5">
+    <a asp-action="Index" asp-controller="AdminHome" class="btn btn-secondary">Back</a>
+</div>

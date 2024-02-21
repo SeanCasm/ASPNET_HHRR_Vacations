@@ -1,0 +1,62 @@
+﻿@model ASPNET_HHRR_Vacations.Models.Employee
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewData["Name"] = $"{Model.CompleteName} employee has been updated successfully";
+}
+
+<section>
+    <h3>Employee management</h3>
+    <hr />
+    <p>
+        This portal is for <strong class="text-success">edit an existing employee</strong> available into the database.
+        Only employee name is currently editable.
+        <br/>
+        Currently editing: @Model.CompleteName
+    </p>
+</section>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Edit", "AdminHome", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => model.EmployeeId)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+
+            <div>
+                @if (TempData["Success"] != null)
+                {
+                    <p class="text-success">@TempData["Success"]</p>
+                }
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        }
+
+    </div>
+</div>
+
+<div class="mt-5">
+    <a asp-action="Employees" asp-controller="AdminHome" class="btn btn-secondary">Back</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

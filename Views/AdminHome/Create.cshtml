@@ -1,0 +1,65 @@
+﻿@model ASPNET_HHRR_Vacations.Models.Employee
+
+@{
+    ViewData["Title"] = "Welcome";
+}
+
+<section>
+    <h3>Employee management</h3>
+    <hr />
+    <p>
+        This portal is to <strong class="text-success">insert a new employee </strong> into the database.
+        The email field adds automatically @@enterprise.com at the end.
+    </p>
+</section>
+@using (Html.BeginForm("Create", "AdminHome", FormMethod.Post))
+{
+    <div class="mt-3 d-flex flex-column gap-3 w-50">
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeHolder = "Name" })
+            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeHolder = "Last name" })
+            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserCredential.Email, new { @class = "control-label" })
+            <div class="d-flex gap-2">
+                @Html.TextBoxFor(model => model.UserCredential.Email, new { @class = "form-control", @placeHolder = "john_doe" })
+                <p>@@enterprise.com</p>
+            </div>
+            @Html.ValidationMessageFor(model => model.UserCredential.Email, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserCredential.PasswordHash, new { @class = "control-label" })
+            @Html.PasswordFor(model => model.UserCredential.PasswordHash, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.UserCredential.PasswordHash, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mt-3">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            @if (TempData["Success"] != null)
+            {
+                <p class="text-success">@TempData["Success"]</p>
+            }
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<div class="mt-5">
+    <a asp-action="Employees" asp-controller="AdminHome" class="btn btn-secondary">Back</a>
+</div>

@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+<header class="text-center">
+    <h1>@ViewData["Title"] @ViewBag.Name</h1>
+</header>
+<hr />
+<p>
+    Web portal designed for our employees to request vacations.
+    Any problem or recommendation contact with our enterprise portal administrators.
+</p>
+<section class="d-flex flex-column text-center">
+    <div class="mt-5">
+        <a asp-action="CreateTicket" asp-controller="EmployeeHome">Request vacations</a>
+    </div>
+
+    <div class="mt-5">
+        <a asp-action="Vacations" asp-controller="EmployeeHome">Show requests issued</a>
+    </div>
+</section>
