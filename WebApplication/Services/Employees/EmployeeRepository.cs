@@ -9,20 +9,7 @@ namespace ASPNET_HHRR_Vacations.Services.Employees
         }
         public async Task Delete(Employee entity)
         {
-            await _enterpriseContext
-                    .Entry(entity)
-                    .Collection(e => e.VacationTickets)
-                    .LoadAsync();
-
-            await _enterpriseContext.Entry(entity)
-                .Collection(e => e.Vacations)
-                .LoadAsync();
-
-            entity.VacationTickets.Clear();
-            entity.Vacations.Clear();
-            _enterpriseContext.UserCredentials.Remove(entity.UserCredential);
             _enterpriseContext.Employees.Remove(entity);
-
             await Save();
         }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ASPNET_HHRR_Vacations.Models;
 
@@ -44,8 +42,8 @@ public partial class EnterpriseContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-        });
 
+        });
         modelBuilder.Entity<RequestStatus>(entity =>
         {
             entity.HasKey(e => e.RequestId).HasName("PK__RequestS__33A8519A6FF19F3A");
@@ -76,7 +74,7 @@ public partial class EnterpriseContext : DbContext
 
             entity.HasOne(d => d.Employee).WithOne(p => p.UserCredential)
                 .HasForeignKey<UserCredential>(d => d.EmployeeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__UserCrede__Emplo__2AD55B43");
         });
 
@@ -93,7 +91,7 @@ public partial class EnterpriseContext : DbContext
 
             entity.HasOne(d => d.Employee).WithMany(p => p.Vacations)
                 .HasForeignKey(d => d.EmployeeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Vacation__Employ__1F63A897");
         });
 
@@ -113,17 +111,17 @@ public partial class EnterpriseContext : DbContext
 
             entity.HasOne(d => d.Employee).WithMany(p => p.VacationTickets)
                 .HasForeignKey(d => d.EmployeeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__VacationT__Emplo__24285DB4");
 
             entity.HasOne(d => d.Request).WithMany(p => p.VacationTickets)
                 .HasForeignKey(d => d.RequestId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__VacationT__Reque__2610A626");
 
             entity.HasOne(d => d.Vacation).WithMany(p => p.VacationTickets)
                 .HasForeignKey(d => d.VacationId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__VacationT__Vacat__251C81ED");
         });
 

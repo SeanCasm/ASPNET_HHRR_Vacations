@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ASPNET_HHRR_Vacations.Models;
+﻿namespace ASPNET_HHRR_Vacations.Models;
 
 public partial class RequestStatus
 {

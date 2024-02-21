@@ -1,12 +1,12 @@
 ﻿using ASPNET_HHRR_Vacations.Models;
+using ASPNET_HHRR_Vacations.Services.Authentication;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Data.Common;
-using ASPNET_HHRR_Vacations.Services.Authentication;
+using System.Security.Claims;
 
 namespace ASPNET_HHRR_Vacations.Controllers
 {
@@ -39,7 +39,7 @@ namespace ASPNET_HHRR_Vacations.Controllers
                 await UserRedirect();
             return View();
         }
-        
+
         [HttpPost]
         public async Task<ActionResult<UserCredential>> Credentials(UserCredential loginCredentials)
         {
@@ -60,7 +60,8 @@ namespace ASPNET_HHRR_Vacations.Controllers
                 {
                     new (ClaimTypes.Role, user.IsAdmin ? "Admin" : "User"),
                     new (ClaimTypes.Name, employee.CompleteName),
-                    new (ClaimTypes.NameIdentifier, user.EmployeeId.ToString())
+                    new (ClaimTypes.NameIdentifier, user.EmployeeId.ToString()),
+                    new (ClaimTypes.Email,user.Email)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

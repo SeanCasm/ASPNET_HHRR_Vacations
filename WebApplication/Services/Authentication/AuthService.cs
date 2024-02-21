@@ -47,7 +47,7 @@ namespace ASPNET_HHRR_Vacations.Services.Authentication
             }
 
             authResult.IsSuccess = false;
-            authResult.ErrorMessage = "Incorrect password, try again";
+            authResult.ErrorMessage = "Password doesn't match, try again.";
             return authResult;
         }
         private async Task<UserCredential> FindUserByEmail(string fullEmail)

@@ -1,12 +1,11 @@
 ﻿using ASPNET_HHRR_Vacations.Models;
+using ASPNET_HHRR_Vacations.Services.Authentication;
+using ASPNET_HHRR_Vacations.Services.Employees;
+using ASPNET_HHRR_Vacations.Services.VacationRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ASPNET_HHRR_Vacations.Helpers;
 using System.Security.Claims;
-using ASPNET_HHRR_Vacations.Services.Authentication;
-using ASPNET_HHRR_Vacations.Services.VacationRequests;
-using ASPNET_HHRR_Vacations.Services.Employees;
 
 namespace ASPNET_HHRR_Vacations.Controllers
 {
@@ -191,27 +190,26 @@ namespace ASPNET_HHRR_Vacations.Controllers
             try
             {
                 int adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-                var adminCredentials = await _enterpriseContext.UserCredentials
-                    .FirstOrDefaultAsync(u => u.EmployeeId == adminId && u.IsAdmin);
+                string? email = User.FindFirst(ClaimTypes.Email)?.Value;
 
-                if (adminCredentials == null)
+                UserCredential adminLogged = new()
                 {
-                    ModelState.AddModelError(string.Empty, "Admin user not found, try again.");
+                    Email = email,
+                    PasswordHash = user.PasswordHash,
+                };
+                AuthResult result = await _authService.VerifyCredentials(adminLogged);
+                if (!result.IsSuccess)
+                {
+                    ModelState.AddModelError(string.Empty, result.ErrorMessage);
                     return View("Delete", user);
                 }
 
-                if (user.PasswordHash != adminCredentials.PasswordHash)
-                {
-                    ModelState.AddModelError(string.Empty, "Password doesn't match, try again.");
-                    return View("Delete", user);
-                }
                 var employee = await _employeeRepository.FindByIdAndIncludeCredentials(user.EmployeeId);
                 if (employee == null)
                 {
                     ModelState.AddModelError(string.Empty, "Employee not found, try again.");
                     return View("Delete", user);
                 }
-
 
                 await _employeeRepository.Delete(employee);
                 return RedirectToAction("Employees");
@@ -220,19 +218,12 @@ namespace ASPNET_HHRR_Vacations.Controllers
             {
                 ModelState.AddModelError(string.Empty, "An unkown error occurred while trying to update the employee.");
             }
-            catch (NullReferenceException ex)
+            catch (InvalidOperationException ex)
             {
-                ModelState.AddModelError(string.Empty, "Invalid Employee or Admin reference, try again.");
+                ModelState.AddModelError(string.Empty, "An error ocurred while trying to delete the employee data, try again.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine("Inner Exception:");
-                    Console.WriteLine(ex.InnerException.ToString());
-                }
                 GenericErrorSetter();
             }
             return View("Delete", user);

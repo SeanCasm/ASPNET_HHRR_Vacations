@@ -14,7 +14,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         .AddCookie(options =>
         {
             options.LoginPath = "/Login";
-            options.ExpireTimeSpan = TimeSpan.FromDays(3);
+            options.ExpireTimeSpan = TimeSpan.FromDays(1);
             options.SlidingExpiration = true;
         });
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
@@ -30,11 +30,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthorization();
-
 
 
 app.MapControllerRoute(

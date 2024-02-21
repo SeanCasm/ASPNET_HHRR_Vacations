@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-namespace ASPNET_HHRR_Vacations.Helpers
+﻿namespace ASPNET_HHRR_Vacations.Helpers
 {
     public static class StringUtilities
     {
@@ -12,6 +10,9 @@ namespace ASPNET_HHRR_Vacations.Helpers
         /// <returns>A string with @enterprise.com</returns>
         public static string FormatEmail(this string str)
         {
+            if (str.EndsWith(domain))
+                return str;
+
             return (str + domain).ToLower().Trim();
         }
         /// <summary>
@@ -22,7 +23,7 @@ namespace ASPNET_HHRR_Vacations.Helpers
         public static string Capitalize(this string str)
         {
             char capitalLetter = char.ToUpper(str[0]);
-            string newStr = capitalLetter + str.Remove(0,1).ToLower();
+            string newStr = capitalLetter + str.Remove(0, 1).ToLower();
             return newStr;
         }
     }

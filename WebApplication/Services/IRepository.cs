@@ -1,6 +1,4 @@
-﻿using ASPNET_HHRR_Vacations.Models;
-
-namespace ASPNET_HHRR_Vacations.Services
+﻿namespace ASPNET_HHRR_Vacations.Services
 {
     public interface IRepository<T> where T : class
     {

@@ -2,7 +2,7 @@
 
 namespace ASPNET_HHRR_Vacations.Services.VacationRequests
 {
-    public interface IVacationRepository: IRepository<VacationTicket>
+    public interface IVacationRepository : IRepository<VacationTicket>
     {
         Task Approve(VacationTicket ticket);
         Task Decline(VacationTicket entity);
